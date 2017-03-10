@@ -84,7 +84,8 @@ public class Main {
 		//Formatting
 		System.out.println();
 		
-		league.display();
+		league.displayWeekly();
+		league.displayOverall();
 
 		//Display Hot Players in the last week
 		ExportExcel.export("Week.xls", 0, fantasy);

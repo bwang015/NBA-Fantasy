@@ -18,6 +18,7 @@ import minheap.StackStats;
 public class LeagueStats {
 	JSONParser parser;
 	StackStats sstats = new StackStats();
+	StackStats weeks = new StackStats();
 	String myTeam;
 	String otherTeam;
 
@@ -49,12 +50,16 @@ public class LeagueStats {
 						(int) stl, (int) ast, (int) ftm, (int) fta, (int) fgm, (int) fga));
 			}
 			// rank the scores here then delete
-			sort(score);
+			sort(score, sstats);
+			
+			// if statistics are within the last 2 weeks, sort them separately
+			if(obj.size() - i <= 2)
+				sort(score, weeks);
 			score.clear();
 		}
 	}
 
-	private void sort(HashMap<String, LeagueLine> score) {
+	private void sort(HashMap<String, LeagueLine> score, StackStats s) {
 		// score has all stats for a specific team -> myTeam, pts:xxx, reb:xxx etc.
 		HeapStats hstats = new HeapStats();
 
@@ -70,7 +75,7 @@ public class LeagueStats {
 					tmp.getBlk(), tmp.getTo());
 		}
 		
-		parseHeap(hstats, sstats);
+		parseHeap(hstats, s);
 	}
 
 	private void parseHeap(HeapStats hstats, StackStats sstats) {
@@ -178,13 +183,32 @@ public class LeagueStats {
 		
 		return sort;
 	}
+	
+	public void displayWeekly() {
+		for(String category: weeks.getKeys()){
+			int rank = 1;
+			System.out.println(category);
+			Stack<Tuple> stack = weeks.get(category);
+			
+			while(!stack.isEmpty()){
+				Tuple tmp = stack.pop();
+				if(!tmp.getName().equals(myTeam) && !tmp.getName().equals(otherTeam)){
+					rank++;
+					continue;
+				}
+				
+				System.out.println("\tRank " + rank + ": " + tmp.getName() + " " + tmp.getValue());
+				rank++;
+			}
+			
+			System.out.println();
+		}
+	}
 
-	public void display() {
+	public void displayOverall() {
 		HashMap<String, Integer> overall = new HashMap<String, Integer>();
 		
 		for(String category: sstats.getKeys()){
-			int rank = 1;
-			System.out.println(category);
 			Stack<Tuple> stack = sstats.get(category);
 			
 			while(!stack.isEmpty()){
@@ -195,12 +219,7 @@ public class LeagueStats {
 				}else{
 					overall.put(tmp.getName(), tmp.getValue());
 				}
-				if(tmp.getName().equals(myTeam) || tmp.getName().equals(otherTeam))
-					System.out.println("\tRank " + rank + ": " + tmp.getName() + " " + tmp.getValue());
-				rank++;
 			}
-			
-			System.out.println();
 		}
 
 		Heap overallValue = new Heap();
