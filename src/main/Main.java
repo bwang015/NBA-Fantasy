@@ -55,12 +55,12 @@ public class Main {
 		
 		String[] add = {};
 		
-		Statline myStat = new Statline(216, .417, 79, .797, 23, 266, 91, 66, 12, 13, 22);
+		Statline myStat = new Statline(257, .432, 85, .800, 30, 320, 110, 74, 13, 14, 25);
 		fantasy.addStatline(myTeam, myStat);
 		
 		fantasy.addStatline("replace", myStat.clone());
 		
-		Statline otherStat = new Statline(223, .498, 55, .745, 22, 285, 110, 73, 18, 11, 28);
+		Statline otherStat = new Statline(323, .511, 82, .768, 34, 427, 155, 99, 26, 12, 25);
 		fantasy.addStatline(otherTeam, otherStat);
 		
 		addEntries(fantasy, teams);
@@ -217,7 +217,7 @@ public class Main {
 		fantasy.addEntry(teams[0], "Seth Curry");
 		fantasy.addEntry(teams[0], "Lou Williams");
 		fantasy.addEntry(teams[0], "Jeremy Lin");
-		fantasy.addEntry(teams[0], "Marcus Smart");
+		fantasy.addEntry(teams[0], "Marquese Chriss");
 		fantasy.addEntry(teams[0], "CJ McCollum");
 		fantasy.addEntry(teams[0], "Giannis Antetokounmpo");
 		

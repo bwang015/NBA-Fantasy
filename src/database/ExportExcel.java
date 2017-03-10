@@ -3,8 +3,10 @@ package database;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -22,8 +24,26 @@ public class ExportExcel {
 	final static int FOUR = 4;
 	final static int TWO = 2;
 	final static int ONE = 1;
-	final static int LEAGUE_SIZE = 10;
+	static int LEAGUE_SIZE = 10;
 	public static HashMap<String, Statline> notable_injuries = new HashMap<String, Statline>();
+	static String TEAM_PERFORMANCE;
+	
+	static {
+		Properties prop = new Properties();
+		InputStream input = null;
+		
+		try {
+			input = new FileInputStream("config.properties");
+			
+			//load a properties file
+			prop.load(input);
+			
+			TEAM_PERFORMANCE = prop.getProperty("team.status");
+			LEAGUE_SIZE = Integer.parseInt(prop.getProperty("league.size"));
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
 	
 	
 	public static void start() throws IOException {
@@ -68,7 +88,7 @@ public class ExportExcel {
 				for(String x: leagueRoster.keySet()){
 					Set<String> individualRoster = leagueRoster.get(x);
 					if(individualRoster.contains(name)){
-						if(x.equals("myTeam")){
+						if(x.equals(TEAM_PERFORMANCE)){
 							MyTeam.getInstance().add(name, s);
 						}
 						break;
