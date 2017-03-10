@@ -29,41 +29,31 @@ public class Main {
 	private final static String BLOCKS = "block_value";
 
 	public static void main(String[] args) throws IOException, ParseException {
-		ExportExcel.start();
-
-		Player fantasy = new Player("", ""); // 10/25, Sa
+		LoadInfo info = new LoadInfo();
+		String customDate = info.getCustomDate();
+		String customDay = info.getCustomDay();
+		String myTeam = info.getMyTeam();
+		String otherTeam = info.getOtherTeam();
 		
-		String[] teams = {
-				"myTeam",
-				"Jchow's Team",
-				"Joe's Team",
-				"Yujie's Team",
-				"Jason's Team",
-				"Andy's Team",
-				"Child's Play",
-				"Kimba's WhiteWalkers",
-				"MollyWopers",
-				"Warriors Reunion"
-		};
+		Player fantasy = new Player(customDate, customDay); // 10/25, Sa
 		
-		String myTeam = teams[0];
-		String otherTeam = teams[1];
+		String[] teams = info.getTeams();
 		
 		LeagueStats league = new LeagueStats(myTeam, otherTeam);
 		
-		String[] drop = {};
+		String[] drop = info.getDrop();
 		
-		String[] add = {};
+		String[] add = info.getAdd();
 		
-		Statline myStat = new Statline(257, .432, 85, .800, 30, 320, 110, 74, 13, 14, 25);
+		Statline myStat = info.getStatline(myTeam);
 		fantasy.addStatline(myTeam, myStat);
 		
 		fantasy.addStatline("replace", myStat.clone());
 		
-		Statline otherStat = new Statline(323, .511, 82, .768, 34, 427, 155, 99, 26, 12, 25);
+		Statline otherStat = info.getStatline(otherTeam);
 		fantasy.addStatline(otherTeam, otherStat);
 		
-		addEntries(fantasy, teams);
+		info.addEntries(fantasy, teams);
 		
 		System.out.println("Injury Report");
 		displayInjuries();
@@ -204,148 +194,6 @@ public class Main {
 		}
 		//Formatting
 		System.out.println();
-	}
-
-	private static void addEntries(Player fantasy, String[] teams) {
-		fantasy.addEntry(teams[0], "Courtney Lee");
-		fantasy.addEntry(teams[0], "Jameer Nelson");
-		fantasy.addEntry(teams[0], "Pau Gasol");
-		fantasy.addEntry(teams[0], "Gordon Hayward");
-		fantasy.addEntry(teams[0], "Nikola Jokic");
-		fantasy.addEntry(teams[0], "Myles Turner");
-		fantasy.addEntry(teams[0], "Julius Randle");
-		fantasy.addEntry(teams[0], "Seth Curry");
-		fantasy.addEntry(teams[0], "Lou Williams");
-		fantasy.addEntry(teams[0], "Jeremy Lin");
-		fantasy.addEntry(teams[0], "Marquese Chriss");
-		fantasy.addEntry(teams[0], "CJ McCollum");
-		fantasy.addEntry(teams[0], "Giannis Antetokounmpo");
-		
-		fantasy.addEntry(teams[1], "JJ Redick");
-		fantasy.addEntry(teams[1], "Dario Saric");
-		fantasy.addEntry(teams[1], "Wilson Chandler");
-		fantasy.addEntry(teams[1], "LeBron James");
-		fantasy.addEntry(teams[1], "Zach Randolph");
-		fantasy.addEntry(teams[1], "Marcus Morris");
-		fantasy.addEntry(teams[1], "Dirk Nowitzki");
-		fantasy.addEntry(teams[1], "Reggie Jackson");
-		fantasy.addEntry(teams[1], "Otto Porter");
-		fantasy.addEntry(teams[1], "Elfrid Payton");
-		fantasy.addEntry(teams[1], "Chris Paul");
-		fantasy.addEntry(teams[1], "Danilo Gallinari");
-		fantasy.addEntry(teams[1], "Kristaps Porzingis");
-		
-		fantasy.addEntry(teams[2], "James Harden");
-		fantasy.addEntry(teams[2], "Victor Oladipo");
-		fantasy.addEntry(teams[2], "Bradley Beal");
-		fantasy.addEntry(teams[2], "Draymond Green");
-		fantasy.addEntry(teams[2], "Derrick Favors");
-		fantasy.addEntry(teams[2], "Markieff Morris");
-		fantasy.addEntry(teams[2], "Brook Lopez");
-		fantasy.addEntry(teams[2], "Ryan Anderson");
-		fantasy.addEntry(teams[2], "Marcin Gortat");
-		fantasy.addEntry(teams[2], "Marvin Williams");
-		fantasy.addEntry(teams[2], "Gorgui Dieng");
-		fantasy.addEntry(teams[2], "Dennis Schroder");
-		fantasy.addEntry(teams[2], "Robert Covington");
-		
-		fantasy.addEntry(teams[3], "Eric Bledsoe");
-		fantasy.addEntry(teams[3], "TJ Warren");
-		fantasy.addEntry(teams[3], "Dion Waiters");
-		fantasy.addEntry(teams[3], "Al-Farouq Aminu");
-		fantasy.addEntry(teams[3], "Paul George");
-		fantasy.addEntry(teams[3], "Tobias Harris");
-		fantasy.addEntry(teams[3], "DeMarcus Cousins");
-		fantasy.addEntry(teams[3], "Jusuf Nurkic");
-		fantasy.addEntry(teams[3], "Paul Millsap");
-		fantasy.addEntry(teams[3], "George Hill");
-		fantasy.addEntry(teams[3], "Nicolas Batum");
-		fantasy.addEntry(teams[3], "Clint Capela");
-		fantasy.addEntry(teams[3], "Terrence Ross");
-		
-		fantasy.addEntry(teams[4], "Damian Lillard");
-		fantasy.addEntry(teams[4], "Avery Bradley");
-		fantasy.addEntry(teams[4], "Eric Gordon");
-		fantasy.addEntry(teams[4], "Evan Fournier");
-		fantasy.addEntry(teams[4], "Alan Williams");
-		fantasy.addEntry(teams[4], "Tyreke Evans");
-		fantasy.addEntry(teams[4], "DeMar DeRozan");
-		fantasy.addEntry(teams[4], "Al Horford");
-		fantasy.addEntry(teams[4], "Darren Collison");
-		fantasy.addEntry(teams[4], "Isaiah Thomas");
-		fantasy.addEntry(teams[4], "Devin Booker");
-		fantasy.addEntry(teams[4], "Wesley Matthews");
-		fantasy.addEntry(teams[4], "Hassan Whiteside");
-		
-		fantasy.addEntry(teams[5], "John Wall");
-		fantasy.addEntry(teams[5], "Tim Hardaway Jr");
-		fantasy.addEntry(teams[5], "Mike Conley");
-		fantasy.addEntry(teams[5], "Trevor Ariza");
-		fantasy.addEntry(teams[5], "Blake Griffin");
-		fantasy.addEntry(teams[5], "Marc Gasol");
-		fantasy.addEntry(teams[5], "Karl-Anthony Towns");
-		fantasy.addEntry(teams[5], "Nerlens Noel");
-		fantasy.addEntry(teams[5], "Guillermo Hernangomez");
-		fantasy.addEntry(teams[5], "Enes Kanter");
-		fantasy.addEntry(teams[5], "Goran Dragic");
-		fantasy.addEntry(teams[5], "Jrue Holiday");
-		fantasy.addEntry(teams[5], "Khris Middleton");
-		
-		fantasy.addEntry(teams[6], "Russell Westbrook");
-		fantasy.addEntry(teams[6], "Kentavious Caldwell-Pope");
-		fantasy.addEntry(teams[6], "Jeff Teague");
-		fantasy.addEntry(teams[6], "Bojan Bogdanovic");
-		fantasy.addEntry(teams[6], "Nikola Vucevic");
-		fantasy.addEntry(teams[6], "Jae Crowder");
-		fantasy.addEntry(teams[6], "Cody Zeller");
-		fantasy.addEntry(teams[6], "Robin Lopez");
-		fantasy.addEntry(teams[6], "Gary Harris");
-		fantasy.addEntry(teams[6], "Jordan Clarkson");
-		fantasy.addEntry(teams[6], "Rudy Gobert");
-		fantasy.addEntry(teams[6], "James Johnson");
-		fantasy.addEntry(teams[6], "Jimmy Butler");
-		
-		fantasy.addEntry(teams[7], "Ricky Rubio");
-		fantasy.addEntry(teams[7], "Tyler Johnson");
-		fantasy.addEntry(teams[7], "Kemba Walker");
-		fantasy.addEntry(teams[7], "Kent Bazemore");
-		fantasy.addEntry(teams[7], "Kevin Durant");
-		fantasy.addEntry(teams[7], "Serge Ibaka");
-		fantasy.addEntry(teams[7], "Steven Adams");
-		fantasy.addEntry(teams[7], "Jonas Valanciunas");
-		fantasy.addEntry(teams[7], "Jamal Crawford");
-		fantasy.addEntry(teams[7], "Tony Allen");
-		fantasy.addEntry(teams[7], "Kyrie Irving");
-		fantasy.addEntry(teams[7], "Greg Monroe");
-		fantasy.addEntry(teams[7], "Andre Drummond");
-		
-		fantasy.addEntry(teams[8], "Derrick Rose");
-		fantasy.addEntry(teams[8], "Rodney Hood");
-		fantasy.addEntry(teams[8], "Dwyane Wade");
-		fantasy.addEntry(teams[8], "Carmelo Anthony");
-		fantasy.addEntry(teams[8], "Dwight Howard");
-		fantasy.addEntry(teams[8], "Kawhi Leonard");
-		fantasy.addEntry(teams[8], "Anthony Davis");
-		fantasy.addEntry(teams[8], "DeAndre Jordan");
-		fantasy.addEntry(teams[8], "Joel Embiid");
-		fantasy.addEntry(teams[8], "D'Angelo Russell");
-		fantasy.addEntry(teams[8], "Emmanuel Mudiay");
-		fantasy.addEntry(teams[8], "Patrick Beverley");
-		fantasy.addEntry(teams[8], "Chandler Parsons");
-		
-		fantasy.addEntry(teams[9], "Stephen Curry");
-		fantasy.addEntry(teams[9], "Tyson Chandler");
-		fantasy.addEntry(teams[9], "Andre Iguodala");
-		fantasy.addEntry(teams[9], "Harrison Barnes");
-		fantasy.addEntry(teams[9], "Aaron Gordon");
-		fantasy.addEntry(teams[9], "Andrew Wiggins");
-		fantasy.addEntry(teams[9], "Dwight Powell");
-		fantasy.addEntry(teams[9], "Mason Plumlee");
-		fantasy.addEntry(teams[9], "Moe Harkless");
-		fantasy.addEntry(teams[9], "Klay Thompson");
-		fantasy.addEntry(teams[9], "Tristan Thompson");
-		fantasy.addEntry(teams[9], "LaMarcus Aldridge");
-		fantasy.addEntry(teams[9], "Nick Young");
 	}
 	
 	private static Double round(Double value, int places) {

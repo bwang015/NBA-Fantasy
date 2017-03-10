@@ -24,15 +24,17 @@ public class LeagueStats {
 	StackStats weeks = new StackStats();
 	String myTeam;
 	String otherTeam;
-	static int NUM_WEEKS;
+	static int num_weeks;
+	static String league_data;
 	
 	static {
 		Properties prop = new Properties();
 		try {
-			InputStream input = new FileInputStream("config.properties");
+			InputStream input = new FileInputStream("conf/config.properties");
 			prop.load(input);
 			
-			NUM_WEEKS = Integer.parseInt(prop.getProperty("league.heap.weeks"));
+			num_weeks = Integer.parseInt(prop.getProperty("league.heap.weeks"));
+			league_data = prop.getProperty("league.json.data");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +45,7 @@ public class LeagueStats {
 		this.myTeam = myTeam;
 		this.otherTeam = otherTeam;
 		parser = new JSONParser();
-		JSONObject obj = (JSONObject) parser.parse(new FileReader("League.json"));
+		JSONObject obj = (JSONObject) parser.parse(new FileReader(league_data));
 		for (int i = 0; i < obj.size(); i++) {
 			int week = i + 1;
 			JSONArray arr = (JSONArray) obj.get("Week " + week);
@@ -70,7 +72,7 @@ public class LeagueStats {
 			sort(score, sstats);
 			
 			// if statistics are within the last 2 weeks, sort them separately
-			if(obj.size() - i <= 2)
+			if(obj.size() - i <= num_weeks)
 				sort(score, weeks);
 			score.clear();
 		}
