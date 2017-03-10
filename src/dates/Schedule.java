@@ -3,10 +3,12 @@ package dates;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -15,13 +17,26 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 public class Schedule {
 	private static List<List<String>> days;
 	static Map<String, Integer> numGames;
+	private static String NBA_SCHEDULE;
+	
+	static {
+		Properties prop = new Properties();
+		try {
+			InputStream input = new FileInputStream("config.properties");
+			prop.load(input);
+			
+			NBA_SCHEDULE = prop.getProperty("nba.schedule");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static List<List<String>> getSchedule(){
 		return days;
 	}
 
 	public static void start(String date, String day) throws IOException {
-		File file = new File("NBA-2016-17.xls");
+		File file = new File(NBA_SCHEDULE);
 		FileInputStream fis = new FileInputStream(file);
 		HSSFWorkbook wb = new HSSFWorkbook(fis);
 		HSSFSheet ws = wb.getSheet("vertical");

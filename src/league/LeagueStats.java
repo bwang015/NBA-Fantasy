@@ -1,10 +1,13 @@
 package league;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.Stack;
 
 import org.json.simple.JSONArray;
@@ -21,6 +24,20 @@ public class LeagueStats {
 	StackStats weeks = new StackStats();
 	String myTeam;
 	String otherTeam;
+	static int NUM_WEEKS;
+	
+	static {
+		Properties prop = new Properties();
+		try {
+			InputStream input = new FileInputStream("config.properties");
+			prop.load(input);
+			
+			NUM_WEEKS = Integer.parseInt(prop.getProperty("league.heap.weeks"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	public LeagueStats(String myTeam, String otherTeam) throws FileNotFoundException, IOException, ParseException {
 		this.myTeam = myTeam;
