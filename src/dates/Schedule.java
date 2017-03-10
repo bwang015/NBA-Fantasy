@@ -22,7 +22,7 @@ public class Schedule {
 	static {
 		Properties prop = new Properties();
 		try {
-			InputStream input = new FileInputStream("config.properties");
+			InputStream input = new FileInputStream("conf/config.properties");
 			prop.load(input);
 			
 			NBA_SCHEDULE = prop.getProperty("nba.schedule");

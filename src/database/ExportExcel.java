@@ -33,7 +33,7 @@ public class ExportExcel {
 		InputStream input = null;
 		
 		try {
-			input = new FileInputStream("config.properties");
+			input = new FileInputStream("conf/config.properties");
 			
 			//load a properties file
 			prop.load(input);
