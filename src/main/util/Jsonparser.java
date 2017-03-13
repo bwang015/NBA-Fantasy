@@ -24,4 +24,13 @@ public class Jsonparser extends ObjectParser {
 		}
 		return obj;
 	}
+
+	public String[] getNodes(String line) {
+		String[] params = new String[3];
+		params[0] = line.substring(0, line.indexOf(':')).trim();
+		params[1] = line.substring(line.indexOf(':') + 1, line.indexOf(',')).trim();
+		params[2] = line.substring(line.indexOf(',') + 1, line.length()).trim();
+		
+		return params;
+	}
 }

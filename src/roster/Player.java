@@ -300,4 +300,16 @@ public class Player extends Roster{
 	public Object getPlayerRoster(String teamName) {
 		return playerRoster.get(teamName) != null ? playerRoster.get(teamName) : null;
 	}
+
+
+	public boolean dropPlayer(String team, String drop) {
+		Set<String> tmp = playerRoster.get(team);
+		return tmp.remove(drop);
+	}
+
+
+	public boolean addPlayer(String team, String add) {
+		Set<String> tmp = playerRoster.get(team);
+		return tmp.add(add);
+	}
 }

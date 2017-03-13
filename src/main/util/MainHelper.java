@@ -19,4 +19,28 @@ public class MainHelper {
 		}
 	}
 
+	public boolean executeTransactions(String transaction, Player fantasy) {
+		String[] params = Util.parseTransactions(transaction);
+			
+		boolean dropflag = false;
+		boolean addFlag = false;
+			
+		if(fantasy.dropPlayer(params[0], params[1])) {
+			System.out.println("Dropped " + params[1] + " Successfully");
+			dropflag = true;
+		}
+		else{
+			System.out.println("Error Dropping " + params[1]);
+		}
+		
+		if(fantasy.addPlayer(params[0], params[2])){
+			System.out.println("Added " + params[2] + " Successfully");
+			addFlag = true;
+		}
+		else
+			System.out.println("Error Adding " + params[2]);
+		
+		return addFlag && dropflag;
+	}
+
 }

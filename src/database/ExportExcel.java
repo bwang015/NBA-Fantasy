@@ -26,7 +26,7 @@ public class ExportExcel {
 	final static int ONE = 1;
 	static int LEAGUE_SIZE = 10;
 	public static HashMap<String, Statline> notable_injuries = new HashMap<String, Statline>();
-	static String TEAM_PERFORMANCE;
+	public static String TEAM_PERFORMANCE;
 	
 	static {
 		Properties prop = new Properties();

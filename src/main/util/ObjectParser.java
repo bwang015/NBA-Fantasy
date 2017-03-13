@@ -15,7 +15,7 @@ public class ObjectParser {
 	private Double blk;
 	private Double to;
 	
-	public void parseStats(JSONObject o, String teamName) {
+	public void parseStats(JSONObject o) {
 		pts = Double.parseDouble(o.get("pts").toString());
 		reb = Double.parseDouble(o.get("reb").toString());
 		to = Double.parseDouble(o.get("to").toString());

@@ -1,28 +1,28 @@
 {
 	"myTeam": {
-		"fga": 257,
-  	  	"fgp": 0.432,
-  	  	"fta": 85,
-  	  	"ftp": 0.800,
-  	  	"3pm": 30,
-  	  	"pts": 320,
-  	  	"reb": 110,
-  	  	"ast": 74,
-  	  	"stl": 13,
-  	  	"blk": 14,
-  	  	"to": 25
+		"fga": 0,
+  	  	"fgp": 0,
+  	  	"fta": 0,
+  	  	"ftp": 0,
+  	  	"3pm": 0,
+  	  	"pts": 0,
+  	  	"reb": 0,
+  	  	"ast": 0,
+  	  	"stl": 0,
+  	  	"blk": 0,
+  	  	"to": 0
 	},
-	"Jchow's Team": {
-		"fga": 323,
-  	  	"fgp": 0.511,
-  	  	"fta": 82,
-  	  	"ftp": 0.768,
-  	  	"3pm": 34,
-  	  	"pts": 427,
-  	  	"reb": 155,
-  	  	"ast": 99,
-  	  	"stl": 26,
-  	  	"blk": 12,
-  	  	"to": 47
+	"otherTeam": {
+		"fga": 0,
+  	  	"fgp": 0,
+  	  	"fta": 0,
+  	  	"ftp": 0,
+  	  	"3pm": 0,
+  	  	"pts": 0,
+  	  	"reb": 0,
+  	  	"ast": 0,
+  	  	"stl": 0,
+  	  	"blk": 0,
+  	  	"to": 0
 	}
 }
