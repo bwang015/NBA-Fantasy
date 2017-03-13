@@ -9,9 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.json.simple.JSONObject;
 
@@ -20,6 +23,9 @@ import database.Statline;
 import main.util.Jsonparser;
 import main.util.MainHelper;
 import main.util.Util;
+import minheap.MinHeap;
+import minheap.MyTeam;
+import minheap.PercentLine;
 import roster.Player;
 
 public class LoadInfo {
@@ -179,6 +185,96 @@ public class LoadInfo {
 			json.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			System.out.println();
 		}
+	}
+
+	public void displayInjuries() {
+		System.out.println("Injury Report");
+		HashMap<String, Set<String>> injuries = new HashMap<String, Set<String>>();
+		for(String x: ExportExcel.notable_injuries.keySet()){
+			Statline s = ExportExcel.notable_injuries.get(x);
+			String team = s.getTeam();
+			if(injuries.containsKey(team)){
+				Set<String> tmp = injuries.get(team);
+				tmp.add(x);
+			}else{
+				Set<String> tmp = new HashSet<String>();
+				tmp.add(x);
+				injuries.put(team, tmp);
+			}
+		}
+		List<String> teams = new ArrayList<String>(injuries.keySet());
+		Collections.sort(teams);
+		for(String team: teams){
+			Set<String> injuryRoster = injuries.get(team);
+			System.out.println(team + ": ");
+			for(String player: injuryRoster){
+				Statline s = ExportExcel.notable_injuries.get(player);
+				Double minutes = Util.round(s.getMinutes(), 2);
+				System.out.println("\t" + player + " || " + minutes + " minutes || " + s.getInjuryCause());
+			}
+
+		}
+		
+		System.out.println();
+	}
+
+	public void compare(String[] add, String[] drop, Player fantasy, String myTeam, String otherTeam) {
+		if(add.length != 0 && drop.length != 0){
+			fantasy.changeTeam(myTeam, drop, add);
+			fantasy.compare(myTeam, "replace", otherTeam);
+			fantasy.displayValues(myTeam);
+			fantasy.displayValues("replace");
+			fantasy.displayValues(otherTeam);
+		}
+		else{
+			fantasy.compare(myTeam, "", otherTeam);
+			fantasy.displayValues(myTeam);
+			fantasy.displayValues(otherTeam);
+		}
+		
+		//Formatting
+		System.out.println();	
+	}
+
+	public void displayHotPlayers(Player fantasy) throws IOException {
+		//Display Hot Players in the last week
+		ExportExcel.export("Week.xls", 0, fantasy);
+		
+		MinHeap min = MinHeap.getInstance();
+		
+		PercentLine[] topStats = min.getOverall(min.OVERALL);
+		System.out.println("Overall Top Value");
+		Util.displayHeap(topStats, min.OVERALL);
+		
+		topStats = MinHeap.getInstance().getOverall(min.POINTS);
+		System.out.println("Overall Top Points");
+		Util.displayHeap(topStats, min.POINTS);
+		
+		topStats = MinHeap.getInstance().getOverall(min.REBOUNDS);
+		System.out.println("Overall Top Rebounds");
+		Util.displayHeap(topStats, min.REBOUNDS);
+		
+		topStats = MinHeap.getInstance().getOverall(min.ASSISTS);
+		System.out.println("Overall Top Assists");
+		Util.displayHeap(topStats, min.ASSISTS);
+		
+		topStats = MinHeap.getInstance().getOverall(min.THREES);
+		System.out.println("Overall Top Threes");
+		Util.displayHeap(topStats, min.THREES);
+		
+		topStats = MinHeap.getInstance().getOverall(min.STEALS);
+		System.out.println("Overall Top Steals");
+		Util.displayHeap(topStats, min.STEALS);
+		
+		topStats = MinHeap.getInstance().getOverall(min.BLOCKS);
+		System.out.println("Overall Top Blocks");
+		Util.displayHeap(topStats, min.BLOCKS);
+		
+		topStats = MyTeam.getInstance().getList();
+		System.out.println(ExportExcel.TEAM_PERFORMANCE + "'s Performance over the last week");
+		Util.displayHeap(topStats, min.OVERALL);
 	}
 }

@@ -10,13 +10,13 @@ public class MinHeap {
 	HashMap<String, Heap> topStats = new HashMap<String, Heap>();
 	Data data = Data.getInstance();
 	
-	private final String OVERALL = "overall_value";
-	private final String POINTS = "points_value";
-	private final String REBOUNDS = "rebound_value";
-	private final String ASSISTS = "assist_value";
-	private final String THREES = "three_value";
-	private final String STEALS = "steal_value";
-	private final String BLOCKS = "block_value";
+	public final String OVERALL = "overall_value";
+	public final String POINTS = "points_value";
+	public final String REBOUNDS = "rebound_value";
+	public final String ASSISTS = "assist_value";
+	public final String THREES = "three_value";
+	public final String STEALS = "steal_value";
+	public final String BLOCKS = "block_value";
 	
 	private MinHeap(){}
 	
