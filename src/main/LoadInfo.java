@@ -1,8 +1,16 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import org.json.simple.JSONObject;
@@ -11,6 +19,7 @@ import database.ExportExcel;
 import database.Statline;
 import main.util.Jsonparser;
 import main.util.MainHelper;
+import main.util.Util;
 import roster.Player;
 
 public class LoadInfo {
@@ -71,8 +80,8 @@ public class LoadInfo {
 		String roster_data = prop.getProperty("data.statline");
 		Jsonparser parser = new Jsonparser(roster_data);
 		
-		JSONObject obj = parser.getObj(teamName);
-		parser.parseStats(obj, teamName);
+		JSONObject obj = parser.getObj(teamName.equals("myTeam") ? teamName : "otherTeam");
+		parser.parseStats(obj);
 		
 		Statline s = new Statline(parser.getFGA(), parser.getFGP(), parser.getFTA(), parser.getFTP(),
 				parser.getTRE(), parser.getPTS(), parser.getREB(), parser.getAST(), parser.getSTL(),
@@ -81,15 +90,95 @@ public class LoadInfo {
 		return s;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addEntries(Player fantasy, String[] teams) {
 		MainHelper roster = new MainHelper();
 		String roster_data = prop.getProperty("data.teams");
 		roster.loadRoster(roster_data, fantasy, teams);
-		String transactions = prop.getProperty("data.transactions");
+		String file = prop.getProperty("data.transactions");
 		
-		if(transactions == null)
-			return;
+		List<String> transactions = new ArrayList<String>();
+		List<String> write_actions = new ArrayList<String>();
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			
+			String line;
+			while((line = reader.readLine()) != null){
+				if(line.startsWith("#")){
+					write_actions.add(line);
+					continue;
+				}
+				transactions.add(line);
+			}
+			
+			reader.close();
+			
+			if(transactions.isEmpty())
+				return;
+			
+			
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			
+			for(int i = 0; i < write_actions.size(); i++){
+				writer.write(write_actions.get(i) + "\n");
+			}
+			
+			writer.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		//roster.executeTransactions();		
+		//cleared transactions.log and commit changes to json files.
+		Jsonparser parser = new Jsonparser(roster_data);
+		
+		//get map of all teams
+		HashMap<String, JSONObject> roster_map = new HashMap<String, JSONObject>();
+		for(String x: teams){
+			JSONObject obj = parser.getObj(x);
+			roster_map.put(x, obj);
+		}
+		roster_map.put("Teams", parser.getObj("Teams"));
+		
+		for(int i = 0; i < transactions.size(); i++){
+			if(roster.executeTransactions(transactions.get(i), fantasy)){
+				String[] params = Util.parseTransactions(transactions.get(i));
+				JSONObject obj = roster_map.get(params[0]);
+				
+				for(int j = 0; j < obj.size(); j++){
+					int index = j + 1;
+					String key = "player" + index;
+					if(((String) obj.get(key)).equals(params[1])){
+						obj.put(key, params[2]);
+						break;
+					}
+				}
+			}
+		}
+		
+		//Write to file
+		FileWriter json = null;
+		try {
+			json = new FileWriter(roster_data);
+			StringBuilder str = new StringBuilder();
+			str.append("{");
+			for(String x: roster_map.keySet()){
+				JSONObject obj = roster_map.get(x);
+				str.append("\"" + x + "\": " + obj.toJSONString() + ",\n");
+			}
+			str.deleteCharAt(str.length() - 2);
+			str.append("}");
+			json.append(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			json.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
