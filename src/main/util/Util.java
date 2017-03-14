@@ -1,5 +1,7 @@
 package main.util;
 
+import java.util.HashMap;
+
 import org.json.simple.JSONObject;
 
 import database.Statline;
@@ -32,7 +34,7 @@ public class Util {
 		return (double) tmp / factor;
 	}
 
-	public static void displayHeap(PercentLine[] topStats, String category) {
+	public static void displayHeap(PercentLine[] topStats, String category, HashMap<String, Integer> outputPlayers) {
 		MinHeap min = MinHeap.getInstance();
 		if(topStats == null){
 			System.out.println("No Players Currently \n");
@@ -40,6 +42,12 @@ public class Util {
 		}
 		
 		for(int i = topStats.length - 1; i >= 0; i--){
+			String name = topStats[i].getName();
+			if(outputPlayers.containsKey(name)){
+				outputPlayers.put(name, outputPlayers.get(name) + 1);
+			}else{
+				outputPlayers.put(name, -2);
+			}
 			
 			if(topStats[i] == null)
 				continue;
@@ -68,13 +76,22 @@ public class Util {
 			minutes = round(s.getMinutes(), 2);
 			historic_minutes = round(topStats[i].getHistoricMinutes(), 2);
 			
-			System.out.print(topStats[i].getName() + " " + percent + "% || ");
+			System.out.print(name + " " + percent + "% || ");
 			System.out.print(extraValue + " || " + minutes + " current minutes || ");
 			System.out.print(historic_minutes + " season minutes || ");
 			System.out.print(s.getTeam() + " || ");
-			PlayerSchedule.getPlayerDates(topStats[i].getName());
+			PlayerSchedule.getPlayerDates(name);
 		}
 		//Formatting
+		System.out.println();
+	}
+
+	public static void display(HashMap<String, Integer> outputPlayers) {
+		for(String x: outputPlayers.keySet()){
+			if(outputPlayers.get(x) > 0)
+				System.out.println(x);
+		}
+		
 		System.out.println();
 	}
 }

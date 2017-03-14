@@ -245,36 +245,41 @@ public class LoadInfo {
 		
 		MinHeap min = MinHeap.getInstance();
 		
+		HashMap<String, Integer> outputPlayers = new HashMap<String, Integer>();
+		
 		PercentLine[] topStats = min.getOverall(min.OVERALL);
 		System.out.println("Overall Top Value");
-		Util.displayHeap(topStats, min.OVERALL);
+		Util.displayHeap(topStats, min.OVERALL, outputPlayers);
 		
 		topStats = MinHeap.getInstance().getOverall(min.POINTS);
 		System.out.println("Overall Top Points");
-		Util.displayHeap(topStats, min.POINTS);
+		Util.displayHeap(topStats, min.POINTS, outputPlayers);
 		
 		topStats = MinHeap.getInstance().getOverall(min.REBOUNDS);
 		System.out.println("Overall Top Rebounds");
-		Util.displayHeap(topStats, min.REBOUNDS);
+		Util.displayHeap(topStats, min.REBOUNDS, outputPlayers);
 		
 		topStats = MinHeap.getInstance().getOverall(min.ASSISTS);
 		System.out.println("Overall Top Assists");
-		Util.displayHeap(topStats, min.ASSISTS);
+		Util.displayHeap(topStats, min.ASSISTS, outputPlayers);
 		
 		topStats = MinHeap.getInstance().getOverall(min.THREES);
 		System.out.println("Overall Top Threes");
-		Util.displayHeap(topStats, min.THREES);
+		Util.displayHeap(topStats, min.THREES, outputPlayers);
 		
 		topStats = MinHeap.getInstance().getOverall(min.STEALS);
 		System.out.println("Overall Top Steals");
-		Util.displayHeap(topStats, min.STEALS);
+		Util.displayHeap(topStats, min.STEALS, outputPlayers);
 		
 		topStats = MinHeap.getInstance().getOverall(min.BLOCKS);
 		System.out.println("Overall Top Blocks");
-		Util.displayHeap(topStats, min.BLOCKS);
+		Util.displayHeap(topStats, min.BLOCKS, outputPlayers);
+		
+		System.out.println("Players +3 Categories");
+		Util.display(outputPlayers);
 		
 		topStats = MyTeam.getInstance().getList();
 		System.out.println(ExportExcel.TEAM_PERFORMANCE + "'s Performance over the last week");
-		Util.displayHeap(topStats, min.OVERALL);
+		Util.displayHeap(topStats, min.OVERALL, outputPlayers);
 	}
 }

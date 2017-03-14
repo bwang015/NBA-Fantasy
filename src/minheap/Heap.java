@@ -58,7 +58,7 @@ public class Heap {
 	}
 	
 	public PercentLine[] getList() {
-		PercentLine[] tuple = new PercentLine[SIZE];
+		PercentLine[] tuple = new PercentLine[queue.size()];
 		int i = 0;
 		while(!queue.isEmpty()){
 			tuple[i++] = queue.poll();

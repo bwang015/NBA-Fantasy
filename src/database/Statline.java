@@ -519,7 +519,7 @@ public class Statline extends Calculation{
 		this.overallBlocks += s.getOverallBlocks();
 	}
 
-	private double getOverallBlocks() {
+	public double getOverallBlocks() {
 		return this.overallBlocks;
 	}
 
@@ -527,7 +527,7 @@ public class Statline extends Calculation{
 		this.overallSteals += s.getOverallSteals();
 	}
 
-	private double getOverallSteals() {
+	public double getOverallSteals() {
 		return this.overallSteals;
 	}
 
@@ -535,7 +535,7 @@ public class Statline extends Calculation{
 		this.overallAssists += s.getOverallAssists();
 	}
 
-	private double getOverallAssists() {
+	public double getOverallAssists() {
 		return this.overallAssists;
 	}
 
@@ -551,7 +551,7 @@ public class Statline extends Calculation{
 		this.overallThrees += s.getOverallThrees();
 	}
 
-	private double getOverallThrees() {
+	public double getOverallThrees() {
 		return this.overallThrees;
 	}
 
